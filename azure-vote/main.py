@@ -92,11 +92,11 @@ def index():
         # Get current values
         vote1 = r.get(button1).decode('utf-8')
         # TODO: use tracer object to trace cat vote
-        tracer.span(name="Total {} Voted: {}".format(button1, vote1))
+        tracer.span(name="Total Cats Vote")
 
         vote2 = r.get(button2).decode('utf-8')
         # TODO: use tracer object to trace dog vote
-        tracer.span(name="Total {} Voted: {}".format(button2, vote2))
+        tracer.span(name="Total Dogs Vote")
 
         # Return index with values
         return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title)
@@ -111,10 +111,12 @@ def index():
             vote1 = r.get(button1).decode('utf-8')
             properties = {'custom_dimensions': {'Cats Vote': vote1}}
             # TODO: use logger object to log cat vote
+            logger.warning("{} voted".format(button1), extra=properties)
 
             vote2 = r.get(button2).decode('utf-8')
             properties = {'custom_dimensions': {'Dogs Vote': vote2}}
             # TODO: use logger object to log dog vote
+            logger.warning("{} voted".format(button2), extra=properties)
 
             return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title)
 
@@ -134,6 +136,6 @@ def index():
 
 if __name__ == "__main__":
     # TODO: Use the statement below when running locally
-    app.run()
+    # app.run()
     # TODO: Use the statement below before deployment to VMSS
-    # app.run(host='0.0.0.0', threaded=True, debug=True) # remote
+    app.run(host='0.0.0.0', threaded=True, debug=True)  # remote
